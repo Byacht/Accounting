@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "G:\\MyAndroid\\Accounting\\pullToRefreshListFragment\\build\\intermediates\\res\\merged\\release\\layout\\pull_to_refresh_header_horizontal.xml",
+        "source": "G:\\MyAndroid\\Accounting\\pullToRefreshListFragment\\build\\intermediates\\exploded-aar\\Accounting\\library\\unspecified\\res\\layout\\pull_to_refresh_header_horizontal.xml"
+    },
+    {
+        "merged": "G:\\MyAndroid\\Accounting\\pullToRefreshListFragment\\build\\intermediates\\res\\merged\\release\\layout\\pull_to_refresh_header_vertical.xml",
+        "source": "G:\\MyAndroid\\Accounting\\pullToRefreshListFragment\\build\\intermediates\\exploded-aar\\Accounting\\library\\unspecified\\res\\layout\\pull_to_refresh_header_vertical.xml"
+    },
+    {
+        "merged": "G:\\MyAndroid\\Accounting\\pullToRefreshListFragment\\build\\intermediates\\res\\merged\\release\\layout\\need_this_for_maven.xml",
+        "source": "G:\\MyAndroid\\Accounting\\pullToRefreshListFragment\\src\\main\\res\\layout\\need_this_for_maven.xml"
+    }
+]

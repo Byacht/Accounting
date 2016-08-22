@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "G:\\MyAndroid\\Accounting\\pullToRefreshListFragment\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\indicator_arrow.png",
+        "source": "G:\\MyAndroid\\Accounting\\pullToRefreshListFragment\\build\\intermediates\\exploded-aar\\Accounting\\library\\unspecified\\res\\drawable-xhdpi-v4\\indicator_arrow.png"
+    },
+    {
+        "merged": "G:\\MyAndroid\\Accounting\\pullToRefreshListFragment\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\default_ptr_flip.png",
+        "source": "G:\\MyAndroid\\Accounting\\pullToRefreshListFragment\\build\\intermediates\\exploded-aar\\Accounting\\library\\unspecified\\res\\drawable-xhdpi-v4\\default_ptr_flip.png"
+    },
+    {
+        "merged": "G:\\MyAndroid\\Accounting\\pullToRefreshListFragment\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\default_ptr_rotate.png",
+        "source": "G:\\MyAndroid\\Accounting\\pullToRefreshListFragment\\build\\intermediates\\exploded-aar\\Accounting\\library\\unspecified\\res\\drawable-xhdpi-v4\\default_ptr_rotate.png"
+    }
+]
