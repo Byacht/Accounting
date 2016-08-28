@@ -10,17 +10,18 @@
 
     <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:id="@+id/refresh_listview">
 
     </com.handmark.pulltorefresh.library.PullToRefreshListView>
-
+<!--
     <ListView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:id="@+id/accounts_list">
-    </ListView>
+    </ListView>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:text="Cumulative cost"
+            android:text="总开销"
             android:layout_margin="1dp"
             android:lines="2"
             android:textStyle="bold"
@@ -45,7 +46,8 @@
             android:lines="2"
             android:gravity="center_vertical"
             android:textSize="18sp"
-            android:background="#99dd"/>
+            android:background="#99dd"
+            android:ellipsize="end"/>
     </LinearLayout>
 
     <LinearLayout
@@ -79,6 +81,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/submitbtn"
-        android:text="Submit"/>
+        android:text="添加"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/adLayout"
+        android:orientation="horizontal">
+    </LinearLayout>
 
 </LinearLayout>

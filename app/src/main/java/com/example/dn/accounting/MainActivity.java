@@ -1,8 +1,11 @@
 package com.example.dn.accounting;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -15,9 +18,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,10 +29,12 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.ht.sqlite.MyDataBaseHelper;
 
-import java.util.ArrayList;
-import java.util.List;
+import net.youmi.android.AdManager;
+import net.youmi.android.normal.banner.BannerManager;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+import java.util.ArrayList;
+
+public class MainActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     public static final int DELETE_DATA = 0;
     public static final int UPDATE_DATA = 1;
@@ -53,21 +58,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        AdManager.getInstance(this).init("7a3005bf37e8f523","ead3f10f78d624c2",false,true);
+        View adView = BannerManager.getInstance(this).getBanner(this);
+        LinearLayout adLayout = (LinearLayout) findViewById(R.id.adLayout);
+        adLayout.addView(adView);
+
         allCost = (TextView) findViewById(R.id.cost_textview);
         eventsEdit = (EditText) findViewById(R.id.edit_events);
         costEdit = (EditText) findViewById(R.id.edit_cost);
-        updateAccountsView = LayoutInflater.from(this).inflate(R.layout.update_edit,null);
-        updateEventEdit = (EditText)updateAccountsView.findViewById(R.id.update_edit_events);
-        updateCostEdit = (EditText)updateAccountsView.findViewById(R.id.update_edit_cost);
+        updateAccountsView = LayoutInflater.from(this).inflate(R.layout.update_edit, null);
+        updateEventEdit = (EditText) updateAccountsView.findViewById(R.id.update_edit_events);
+        updateCostEdit = (EditText) updateAccountsView.findViewById(R.id.update_edit_cost);
         submit = (Button) findViewById(R.id.submitbtn);
-        listView = (ListView) findViewById(R.id.accounts_list);
+//        listView = (ListView) findViewById(R.id.accounts_list);
 
-        myDataBaseHelper = new MyDataBaseHelper(this,"Accounts.db",null,1);
+        myDataBaseHelper = new MyDataBaseHelper(this, "Accounts.db", null, 1);
 
         messages = new ArrayList<AccountsMessage>();
 
-        adapter = new AccountsAdapter(this,R.layout.accounts_list,messages);
-        listView.setAdapter(adapter);
+        adapter = new AccountsAdapter(this, R.layout.accounts_list, messages);
+//        listView.setAdapter(adapter);
 
         refreshAccountsList();
 
@@ -76,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         refreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override
             public void onRefresh(final PullToRefreshBase<ListView> refreshView) {
-                new AsyncTask<Void,Void,Void>(){
+                new AsyncTask<Void, Void, Void>() {
 
                     @Override
                     protected Void doInBackground(Void... voids) {
@@ -92,6 +102,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     protected void onPostExecute(Void aVoid) {
 //                        adapter.addAll("is cp");
 //                        refreshView.onRefreshComplete();
+                        Log.d("out", "1111");
+                        refreshAccountsList();
+                        refreshListView.onRefreshComplete();
                     }
                 }.execute();
             }
@@ -99,21 +112,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         submit.setOnClickListener(this);
 //        listView.setOnItemLongClickListener(this);
+//        listView.setOnCreateContextMenuListener(this);
+        listView = refreshListView.getRefreshableView();
+        listView.setOnItemClickListener(this);
         listView.setOnCreateContextMenuListener(this);
+
     }
 
 
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        menu.add(0, DELETE_DATA, 0, "Delete");
-        menu.add(0, UPDATE_DATA, 0, "Update");
+        menu.add(0, DELETE_DATA, 0, "删除数据");
+        menu.add(0, UPDATE_DATA, 0, "更新数据");
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        int position = info.position;
+        int position = info.position - 1;
+        Log.d("out","position:"+position);
         switch (item.getItemId()){
             case DELETE_DATA:
                 removeAccount(position);
@@ -132,10 +150,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!TextUtils.isEmpty(eventsEdit.getText()) && !TextUtils.isEmpty(costEdit.getText())){
             ContentValues values = getMessages(eventsEdit,costEdit);
             add(values);
+            refreshAccountsList();
         }else{
-            Toast.makeText(this,"Content can't be empty",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"内容不能为空",Toast.LENGTH_SHORT).show();
         }
-        refreshAccountsList();
+//        refreshAccountsList();
     }
 
     private void refreshAccountsList(){
@@ -164,14 +183,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }while (cursor.moveToNext());
         }
         cursor.close();
-        Log.d("out","refresh");
         adapter.notifyDataSetChanged();
-        listView.setSelection(messages.size());
+//        listView.setSelection(messages.size());
         showCumulativeCost(allCost);
     }
 
     private void showCumulativeCost(float cost){
-        allCost.setText(String.valueOf(cost));
+        float costAfterHandler = (float)(Math.round(cost*10))/10;
+        allCost.setText(String.valueOf(costAfterHandler));
         if (cost<0){
             allCost.setTextColor(0xff99ff00);
         }else{
@@ -235,4 +254,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .show();
     }
 
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        AccountsMessage message = messages.get(position-1);
+        Intent showDetailIntent = new Intent(this,ShowDetailActivity.class);
+        showDetailIntent.putExtra("event",message.getEvents());
+        showDetailIntent.putExtra("cost",message.getCost());
+        startActivity(showDetailIntent);
+    }
 }
