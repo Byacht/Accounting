@@ -17,6 +17,7 @@ import java.util.List;
 
 public class AccountsAdapter extends ArrayAdapter<AccountsMessage> {
 
+    private int test = 0;
     private int resourceId;
     public AccountsAdapter(Context context, int resource, List<AccountsMessage> msgslist) {
         super(context, resource, msgslist);
